@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class RadioInteraction : MonoBehaviour
+public class RadioInteraction : Interaction
 {
     private AudioSource audioSource;
 
@@ -12,7 +12,7 @@ public class RadioInteraction : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void Interact()
+    public override void Interact()
     {
         if (!audioSource.isPlaying)
         {

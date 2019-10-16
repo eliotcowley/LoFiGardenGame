@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI contextualText;
 
+    [SerializeField]
+    private GameObject buttonPrompt;
+
     private Rigidbody rb;
     private Animator animator;
     private RadioInteraction interaction;
@@ -78,7 +81,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag(Constants.Tag_Interactable))
         {
-            SetText("!");
+            buttonPrompt.SetActive(true);
             interaction = other.gameObject.GetComponent<RadioInteraction>();
         }
     }
@@ -87,7 +90,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag(Constants.Tag_Interactable))
         {
-            SetText("");
+            buttonPrompt.SetActive(false);
             interaction = null;
         }
     }
