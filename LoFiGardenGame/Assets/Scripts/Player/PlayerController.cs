@@ -21,12 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI contextualText;
 
-    [SerializeField]
-    private GameObject buttonPrompt;
-
     private Rigidbody rb;
     private Animator animator;
-    private RadioInteraction interaction;
 
     public void SetText(string text)
     {
@@ -49,17 +45,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetButtonDown(Constants.Input_Submit))
-        {
-            if (interaction != null)
-            {
-                interaction.Interact();
-            }
-        }
-    }
-
     private void FixedUpdate()
     {
         float horizontal = Input.GetAxis(Constants.Input_Horizontal) * Time.fixedDeltaTime * moveSpeed;
@@ -75,23 +60,5 @@ public class PlayerController : MonoBehaviour
         }
 
         animator.SetFloat(Constants.Anim_Speed, moveVector.sqrMagnitude);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag(Constants.Tag_Interactable))
-        {
-            buttonPrompt.SetActive(true);
-            interaction = other.gameObject.GetComponent<RadioInteraction>();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag(Constants.Tag_Interactable))
-        {
-            buttonPrompt.SetActive(false);
-            interaction = null;
-        }
     }
 }
