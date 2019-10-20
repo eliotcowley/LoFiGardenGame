@@ -8,6 +8,7 @@ public static class Constants
     public static string Input_Horizontal = "Horizontal";
     public static string Input_Vertical = "Vertical";
     public static string Input_Submit = "Submit";
+    public static string Input_Menu = "Menu";
 
     // Animation
     public static string Anim_Speed = "Speed";

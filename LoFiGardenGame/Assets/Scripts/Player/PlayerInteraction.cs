@@ -11,11 +11,14 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown(Constants.Input_Submit))
+        if (!GameController.Instance.IsPaused)
         {
-            if (interaction != null)
+            if (Input.GetButtonDown(Constants.Input_Submit))
             {
-                interaction.Interact();
+                if ((interaction != null) && interaction.CanInteract)
+                {
+                    interaction.Interact();
+                }
             }
         }
     }
@@ -25,7 +28,7 @@ public class PlayerInteraction : MonoBehaviour
         if (other.CompareTag(Constants.Tag_Interactable))
         {
             buttonPrompt.SetActive(true);
-            interaction = other.gameObject.GetComponent<RadioInteraction>();
+            interaction = other.gameObject.GetComponent<Interaction>();
         }
     }
 
@@ -35,6 +38,17 @@ public class PlayerInteraction : MonoBehaviour
         {
             buttonPrompt.SetActive(false);
             interaction = null;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag(Constants.Tag_Interactable))
+        {
+            if ((interaction != null) && !interaction.CanInteract)
+            {
+                buttonPrompt.SetActive(false);
+            }
         }
     }
 }

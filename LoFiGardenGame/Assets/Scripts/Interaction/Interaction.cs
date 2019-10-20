@@ -4,5 +4,8 @@ using UnityEngine;
 
 public abstract class Interaction : MonoBehaviour
 {
+    [HideInInspector]
+    public bool CanInteract = true;
+
     public abstract void Interact();
 }

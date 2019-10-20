@@ -47,8 +47,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float horizontal = Input.GetAxis(Constants.Input_Horizontal) * Time.fixedDeltaTime * moveSpeed;
-        float vertical = Input.GetAxis(Constants.Input_Vertical) * Time.fixedDeltaTime * moveSpeed;
+        float horizontal = GameController.Instance.IsPaused ? 0f : Input.GetAxis(Constants.Input_Horizontal) * Time.fixedDeltaTime * moveSpeed;
+        float vertical = GameController.Instance.IsPaused ? 0f : Input.GetAxis(Constants.Input_Vertical) * Time.fixedDeltaTime * moveSpeed;
+
         Vector3 moveVector = new Vector3(horizontal, 0f, vertical);
         Vector3 targetVector = new Vector3(horizontal, rb.velocity.y, vertical);
         rb.velocity = Vector3.Lerp(rb.velocity, targetVector, moveSmooth);
