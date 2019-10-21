@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -36,6 +37,7 @@ public class GameController : MonoBehaviour
 
         if (phone.activeSelf)
         {
+            EventSystem.current.SetSelectedGameObject(null);
             resumeButton.Select();
         }
     }
