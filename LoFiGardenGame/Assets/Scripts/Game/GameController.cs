@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     private GameObject phone;
+
+    [SerializeField]
+    private Button resumeButton;
 
     private void Start()
     {
@@ -29,5 +33,19 @@ public class GameController : MonoBehaviour
     {
         phone.SetActive(!phone.activeSelf);
         IsPaused = phone.activeSelf;
+
+        if (phone.activeSelf)
+        {
+            resumeButton.Select();
+        }
+    }
+
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
