@@ -13,10 +13,45 @@ public class PauseMenu : MonoBehaviour
     private GameObject musicMenu;
 
     [SerializeField]
-    private Button saveButton;
+    private GameObject statsMenu;
 
     [SerializeField]
-    private Button resumeButton;
+    private GameObject questMenu;
+
+    [SerializeField]
+    private Button mainResumeButton;
+
+    [SerializeField]
+    private Button musicSaveButton;
+
+    [SerializeField]
+    private Button statsBackButton;
+
+    [SerializeField]
+    private Button questBackButton;
+
+    private void Update()
+    {
+        if (Input.GetButtonDown(Constants.Input_Cancel))
+        {
+            if (pauseMenu.activeSelf)
+            {
+                GameController.Instance.TogglePause();
+            }
+            else if (musicMenu.activeSelf)
+            {
+                ExitMusicMenu();
+            }
+            else if (statsMenu.activeSelf)
+            {
+                ExitStatsMenu();
+            }
+            else if (questMenu.activeSelf)
+            {
+                ExitQuestMenu();
+            }
+        }
+    }
 
     public void DeselectOtherButtons()
     {
@@ -28,14 +63,46 @@ public class PauseMenu : MonoBehaviour
         DeselectOtherButtons();
         pauseMenu.SetActive(false);
         musicMenu.SetActive(true);
-        saveButton.Select();
+        musicSaveButton.Select();
     }
 
     public void ExitMusicMenu()
     {
+        DeselectOtherButtons();
         musicMenu.SetActive(false);
         pauseMenu.SetActive(true);
+        mainResumeButton.Select();
+    }
+
+    public void OpenStatsMenu()
+    {
         DeselectOtherButtons();
-        resumeButton.Select();
+        pauseMenu.SetActive(false);
+        statsMenu.SetActive(true);
+        statsBackButton.Select();
+    }
+
+    public void ExitStatsMenu()
+    {
+        DeselectOtherButtons();
+        statsMenu.SetActive(false);
+        pauseMenu.SetActive(true);
+        mainResumeButton.Select();
+    }
+
+    public void OpenQuestMenu()
+    {
+        DeselectOtherButtons();
+        pauseMenu.SetActive(false);
+        questMenu.SetActive(true);
+        questBackButton.Select();
+    }
+
+    public void ExitQuestMenu()
+    {
+        DeselectOtherButtons();
+        questMenu.SetActive(false);
+        pauseMenu.SetActive(true);
+        mainResumeButton.Select();
     }
 }

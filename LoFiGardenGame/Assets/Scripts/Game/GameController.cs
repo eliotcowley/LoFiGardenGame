@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -17,9 +18,12 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private Button resumeButton;
 
+    private PostProcessVolume blurEffect;
+
     private void Start()
     {
         Instance = this;
+        blurEffect = Camera.main.GetComponent<PostProcessVolume>();
     }
 
     private void Update()
@@ -34,6 +38,7 @@ public class GameController : MonoBehaviour
     {
         phone.SetActive(!phone.activeSelf);
         IsPaused = phone.activeSelf;
+        blurEffect.enabled = phone.activeSelf;
 
         if (phone.activeSelf)
         {
