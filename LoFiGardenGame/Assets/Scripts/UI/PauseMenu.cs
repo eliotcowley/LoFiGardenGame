@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class PauseMenu : MonoBehaviour
     private GameObject questMenu;
 
     [SerializeField]
+    private GameObject settingsMenu;
+
+    [SerializeField]
     private Button mainResumeButton;
 
     [SerializeField]
@@ -29,6 +33,28 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField]
     private Button questBackButton;
+
+    [SerializeField]
+    private Button settingsBackButton;
+
+    [SerializeField]
+    private TextMeshProUGUI playPauseText;
+
+    [SerializeField]
+    private Image playPauseImage;
+
+    [SerializeField]
+    private Sprite playSprite;
+
+    [SerializeField]
+    private Sprite pauseSprite;
+
+    private MusicController musicController;
+
+    private void Start()
+    {
+        musicController = GameController.Instance.MusicController;
+    }
 
     private void Update()
     {
@@ -49,6 +75,10 @@ public class PauseMenu : MonoBehaviour
             else if (questMenu.activeSelf)
             {
                 ExitQuestMenu();
+            }
+            else if (settingsMenu.activeSelf)
+            {
+                ExitSettingsMenu();
             }
         }
     }
@@ -104,5 +134,28 @@ public class PauseMenu : MonoBehaviour
         questMenu.SetActive(false);
         pauseMenu.SetActive(true);
         mainResumeButton.Select();
+    }
+
+    public void OpenSettingsMenu()
+    {
+        DeselectOtherButtons();
+        pauseMenu.SetActive(false);
+        settingsMenu.SetActive(true);
+        settingsBackButton.Select();
+    }
+
+    public void ExitSettingsMenu()
+    {
+        DeselectOtherButtons();
+        settingsMenu.SetActive(false);
+        pauseMenu.SetActive(true);
+        mainResumeButton.Select();
+    }
+
+    public void PressPlayPause()
+    {
+        musicController.ToggleMusicPlaying();
+        playPauseText.SetText(musicController.AudioSource.isPlaying ? Constants.String_Pause : Constants.String_Play);
+        playPauseImage.sprite = musicController.AudioSource.isPlaying ? pauseSprite : playSprite;
     }
 }

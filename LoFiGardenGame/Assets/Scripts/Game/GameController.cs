@@ -5,12 +5,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public class GameController : Singleton<GameController>
 {
-    public static GameController Instance;
-
     [HideInInspector]
     public bool IsPaused = false;
+
+    [HideInInspector]
+    public MusicController MusicController;
 
     [SerializeField]
     private GameObject phone;
@@ -20,9 +21,13 @@ public class GameController : MonoBehaviour
 
     private PostProcessVolume blurEffect;
 
+    private void Awake()
+    {
+        FindOrCreateMusicController();
+    }
+
     private void Start()
     {
-        Instance = this;
         blurEffect = Camera.main.GetComponent<PostProcessVolume>();
     }
 
@@ -54,5 +59,20 @@ public class GameController : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    private void FindOrCreateMusicController()
+    {
+        if (MusicController == null)
+        {
+            GameObject musicControllerObject = GameObject.FindGameObjectWithTag(Constants.Tag_MusicController);
+
+            if (musicControllerObject == null)
+            {
+                GameObject musicControllerPrefab = Resources.Load<GameObject>(Constants.Prefab_MusicController);
+                musicControllerObject = Instantiate(musicControllerPrefab, gameObject.transform);
+                MusicController = musicControllerObject.GetComponent<MusicController>();
+            }
+        }
     }
 }
