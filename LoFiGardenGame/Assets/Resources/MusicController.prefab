@@ -141,3 +141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1a00cf3baeb284c8153379992fd9bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Songs:
+  - Name: Chill LoFi
+    Clip: {fileID: 8300000, guid: 18ba5e5ce2e09bf4ebab92694655004b, type: 3}
+  - Name: LoFi Hip Hop
+    Clip: {fileID: 8300000, guid: cb95367ee17b3474cb3893619ec2ad46, type: 3}
+  AudioSource: {fileID: 0}
+  CurrentSongIndex: 0

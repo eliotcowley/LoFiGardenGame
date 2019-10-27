@@ -49,6 +49,9 @@ public class PauseMenu : MonoBehaviour
     [SerializeField]
     private Sprite pauseSprite;
 
+    [SerializeField]
+    private TextMeshProUGUI currentSongText;
+
     private MusicController musicController;
 
     private void Start()
@@ -94,6 +97,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         musicMenu.SetActive(true);
         musicSaveButton.Select();
+        currentSongText.SetText(musicController.Songs[musicController.CurrentSongIndex].Name);
     }
 
     public void ExitMusicMenu()
@@ -155,6 +159,25 @@ public class PauseMenu : MonoBehaviour
     public void PressPlayPause()
     {
         musicController.ToggleMusicPlaying();
+        UpdatePlayPauseGroup();
+    }
+
+    public void PressNext()
+    {
+        musicController.NextSong();
+        currentSongText.SetText(musicController.Songs[musicController.CurrentSongIndex].Name);
+        UpdatePlayPauseGroup();
+    }
+
+    public void PressPrevious()
+    {
+        musicController.PreviousSong();
+        currentSongText.SetText(musicController.Songs[musicController.CurrentSongIndex].Name);
+        UpdatePlayPauseGroup();
+    }
+
+    private void UpdatePlayPauseGroup()
+    {
         playPauseText.SetText(musicController.AudioSource.isPlaying ? Constants.String_Pause : Constants.String_Play);
         playPauseImage.sprite = musicController.AudioSource.isPlaying ? pauseSprite : playSprite;
     }
