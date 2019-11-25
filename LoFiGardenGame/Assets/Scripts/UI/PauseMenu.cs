@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,6 +6,9 @@ using TMPro;
 
 public class PauseMenu : MonoBehaviour
 {
+    [HideInInspector]
+    public List<Image> SongButtonImages;
+
     [SerializeField]
     private GameObject pauseMenu;
 
@@ -160,25 +162,30 @@ public class PauseMenu : MonoBehaviour
     {
         musicController.ToggleMusicPlaying();
         UpdatePlayPauseGroup();
+        SongButtonImages[musicController.CurrentSongIndex].sprite = musicController.AudioSource.isPlaying ? pauseSprite : playSprite;
     }
 
     public void PressNext()
     {
         musicController.NextSong();
-        currentSongText.SetText(musicController.Songs[musicController.CurrentSongIndex].Name);
         UpdatePlayPauseGroup();
     }
 
     public void PressPrevious()
     {
         musicController.PreviousSong();
-        currentSongText.SetText(musicController.Songs[musicController.CurrentSongIndex].Name);
         UpdatePlayPauseGroup();
     }
 
-    private void UpdatePlayPauseGroup()
+    public void UpdatePlayPauseGroup()
     {
         playPauseText.SetText(musicController.AudioSource.isPlaying ? Constants.String_Pause : Constants.String_Play);
         playPauseImage.sprite = musicController.AudioSource.isPlaying ? pauseSprite : playSprite;
+        currentSongText.SetText(musicController.Songs[musicController.CurrentSongIndex].Name);
+    }
+
+    public void UpdateOldSongButton()
+    {
+        SongButtonImages[musicController.CurrentSongIndex].sprite = playSprite;
     }
 }

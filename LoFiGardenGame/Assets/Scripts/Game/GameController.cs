@@ -13,8 +13,7 @@ public class GameController : Singleton<GameController>
     [HideInInspector]
     public MusicController MusicController;
 
-    [SerializeField]
-    private GameObject phone;
+    public GameObject Phone;
 
     [SerializeField]
     private Button resumeButton;
@@ -41,11 +40,11 @@ public class GameController : Singleton<GameController>
 
     public void TogglePause()
     {
-        phone.SetActive(!phone.activeSelf);
-        IsPaused = phone.activeSelf;
-        blurEffect.enabled = phone.activeSelf;
+        Phone.SetActive(!Phone.activeSelf);
+        IsPaused = Phone.activeSelf;
+        blurEffect.enabled = Phone.activeSelf;
 
-        if (phone.activeSelf)
+        if (Phone.activeSelf)
         {
             EventSystem.current.SetSelectedGameObject(null);
             resumeButton.Select();

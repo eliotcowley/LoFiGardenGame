@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Interactable
   - MusicController
+  - ButtonSelected
+  - PlayingImage
+  - ScrollView
   layers:
   - Default
   - TransparentFX

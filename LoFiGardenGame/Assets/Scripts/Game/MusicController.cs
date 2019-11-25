@@ -33,13 +33,19 @@ public class MusicController : MonoBehaviour
 
     public void NextSong()
     {
-        CurrentSongIndex = Rollover.Increment(CurrentSongIndex, Songs.Length - 1);
+        CurrentSongIndex = UtilityFunctions.Increment(CurrentSongIndex, Songs.Length - 1);
         UpdateAudioSource();
     }
 
     public void PreviousSong()
     {
-        CurrentSongIndex = Rollover.Decrement(CurrentSongIndex, Songs.Length - 1);
+        CurrentSongIndex = UtilityFunctions.Decrement(CurrentSongIndex, Songs.Length - 1);
+        UpdateAudioSource();
+    }
+
+    public void PlaySong(int index)
+    {
+        CurrentSongIndex = index;
         UpdateAudioSource();
     }
 

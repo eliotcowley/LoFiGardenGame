@@ -1,22 +1,98 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 
 public class ScrollAgain : MonoBehaviour
 {
-    RectTransform scrollRectTransform;
-    RectTransform contentPanel;
-    RectTransform selectedRectTransform;
-    GameObject lastSelected;
+    public Button[] PlaybackButtons;
 
-    void Start()
+    [HideInInspector]
+    public List<Button> SongButtons;
+
+    [SerializeField]
+    private GameObject buttonPrefab;
+
+    [SerializeField]
+    private Button backButton;
+
+    [SerializeField]
+    private PauseMenu pauseMenu;
+
+    private RectTransform scrollRectTransform;
+    private RectTransform contentPanel;
+    private RectTransform selectedRectTransform;
+    private GameObject lastSelected;
+    private MusicController musicController;
+    private float buttonHeight;
+
+    private void Start()
     {
         scrollRectTransform = GetComponent<RectTransform>();
         contentPanel = GetComponent<ScrollRect>().content;
+        contentPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(contentPanel.rect.width, contentPanel.transform.childCount * buttonHeight);
+
+        musicController = GameController.Instance.MusicController;
+        buttonHeight = buttonPrefab.GetComponent<RectTransform>().rect.height;
+        List<Button> SongButtons = new List<Button>();
+
+        for (int i = 0; i < musicController.Songs.Length; i++)
+        {
+            GameObject button = Instantiate(buttonPrefab, contentPanel.transform);
+            button.GetComponent<RectTransform>().localPosition = new Vector3(0f, i * -buttonHeight);
+            SongButtons.Add(button.GetComponent<Button>());
+        }
+
+        for (int i = 0; i < SongButtons.Count; i++)
+        {
+            Navigation navigation = new Navigation();
+            navigation.mode = Navigation.Mode.Explicit;
+
+            if (i > 0)
+            {
+                navigation.selectOnUp = SongButtons[i - 1];
+            }
+            
+            if (i < (SongButtons.Count - 1))
+            {
+                navigation.selectOnDown = SongButtons[i + 1];
+            }
+
+            if (i == 0)
+            {
+                navigation.selectOnUp = PlaybackButtons[1];
+            }
+
+            SongButtons[i].navigation = navigation;
+            SongButtons[i].GetComponentInChildren<TextMeshProUGUI>().SetText(musicController.Songs[i].Name);
+            SongButton songButton = SongButtons[i].GetComponent<SongButton>();
+            songButton.Index = i;
+            pauseMenu.SongButtonImages.Add(songButton.PlayingImage);
+        }
+
+        for (int i = 0; i < PlaybackButtons.Length; i++)
+        {
+            Navigation navigation = new Navigation();
+            navigation.mode = Navigation.Mode.Explicit;
+            navigation.selectOnDown = SongButtons[0];
+            navigation.selectOnUp = backButton;
+
+            if (i < (PlaybackButtons.Length - 1))
+            {
+                navigation.selectOnRight = PlaybackButtons[i + 1];
+            }
+
+            if (i > 0)
+            {
+                navigation.selectOnLeft = PlaybackButtons[i - 1];
+            }
+
+            PlaybackButtons[i].navigation = navigation;
+        }
     }
 
-    void Update()
+    private void Update()
     {
         // Get the currently selected UI element from the event system.
         GameObject selected = EventSystem.current.currentSelectedGameObject;

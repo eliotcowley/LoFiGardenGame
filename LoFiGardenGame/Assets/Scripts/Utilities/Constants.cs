@@ -18,6 +18,9 @@ public static class Constants
     public static string Tag_Player = "Player";
     public static string Tag_Interactable = "Interactable";
     public static string Tag_MusicController = "MusicController";
+    public static string Tag_ButtonSelected = "ButtonSelected";
+    public static string Tag_PlayingImage = "PlayingImage";
+    public static string Tag_ScrollView = "ScrollView";
 
     // Prefabs
     public static string Prefab_MusicController = "MusicController";
@@ -25,4 +28,8 @@ public static class Constants
     // UI Text
     public static string String_Pause = "Pause";
     public static string String_Play = "Play";
+
+    // Resources
+    public static string Resource_Pause = "pause";
+    public static string Resource_Resume = "Resume";
 }
