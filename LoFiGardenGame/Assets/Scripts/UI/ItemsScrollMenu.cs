@@ -4,10 +4,8 @@ using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using TMPro;
 
-public class ScrollAgain : MonoBehaviour
+public class ItemsScrollMenu : MonoBehaviour
 {
-    public Button[] PlaybackButtons;
-
     [HideInInspector]
     public List<Button> SongButtons;
 
@@ -17,79 +15,65 @@ public class ScrollAgain : MonoBehaviour
     [SerializeField]
     private Button backButton;
 
-    [SerializeField]
-    private PauseMenu pauseMenu;
-
     private RectTransform scrollRectTransform;
     private RectTransform contentPanel;
     private RectTransform selectedRectTransform;
     private GameObject lastSelected;
-    private MusicController musicController;
     private float buttonHeight;
 
     private void Start()
     {
         scrollRectTransform = GetComponent<RectTransform>();
         contentPanel = GetComponent<ScrollRect>().content;
-        contentPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(contentPanel.rect.width, contentPanel.transform.childCount * buttonHeight);
+        
 
-        musicController = GameController.Instance.MusicController;
         buttonHeight = buttonPrefab.GetComponent<RectTransform>().rect.height;
-        List<Button> SongButtons = new List<Button>();
+        List<Button> ItemButtons = new List<Button>();
 
-        for (int i = 0; i < musicController.Songs.Length; i++)
+        for (int i = 0; i < GameController.Instance.Items.Count; i++)
         {
             GameObject button = Instantiate(buttonPrefab, contentPanel.transform);
             button.GetComponent<RectTransform>().localPosition = new Vector3(0f, i * -buttonHeight);
-            SongButtons.Add(button.GetComponent<Button>());
+            ItemButtons.Add(button.GetComponent<Button>());
         }
 
-        for (int i = 0; i < SongButtons.Count; i++)
+        List<string> items = new List<string>();
+        foreach (var item in GameController.Instance.Items.Keys)
+        {
+            items.Add(item);
+        }
+
+        for (int i = 0; i < ItemButtons.Count; i++)
         {
             Navigation navigation = new Navigation();
             navigation.mode = Navigation.Mode.Explicit;
 
             if (i > 0)
             {
-                navigation.selectOnUp = SongButtons[i - 1];
+                navigation.selectOnUp = ItemButtons[i - 1];
             }
             
-            if (i < (SongButtons.Count - 1))
+            if (i < (ItemButtons.Count - 1))
             {
-                navigation.selectOnDown = SongButtons[i + 1];
+                navigation.selectOnDown = ItemButtons[i + 1];
             }
 
             if (i == 0)
             {
-                navigation.selectOnUp = PlaybackButtons[1];
+                navigation.selectOnUp = backButton;
             }
 
-            SongButtons[i].navigation = navigation;
-            SongButtons[i].GetComponentInChildren<TextMeshProUGUI>().SetText(musicController.Songs[i].Name);
-            SongButton songButton = SongButtons[i].GetComponent<SongButton>();
-            songButton.Index = i;
-            pauseMenu.SongButtonImages.Add(songButton.PlayingImage);
+            ItemButtons[i].navigation = navigation;
+            UtilityFunctions.GetChildRecursively(ItemButtons[i].transform, Constants.Tag_ItemName).GetComponent<TextMeshProUGUI>().SetText(items[i]);
+            UtilityFunctions.GetChildRecursively(ItemButtons[i].transform, Constants.Tag_ItemCount).GetComponent<TextMeshProUGUI>().SetText($"x{GameController.Instance.Items[items[i]].ToString()}");
         }
 
-        for (int i = 0; i < PlaybackButtons.Length; i++)
-        {
-            Navigation navigation = new Navigation();
-            navigation.mode = Navigation.Mode.Explicit;
-            navigation.selectOnDown = SongButtons[0];
-            navigation.selectOnUp = backButton;
+        Navigation backButtonNavigation = new Navigation();
+        backButtonNavigation.mode = Navigation.Mode.Explicit;
+        backButtonNavigation.selectOnDown = ItemButtons[0];
+        backButton.navigation = backButtonNavigation;
 
-            if (i < (PlaybackButtons.Length - 1))
-            {
-                navigation.selectOnRight = PlaybackButtons[i + 1];
-            }
-
-            if (i > 0)
-            {
-                navigation.selectOnLeft = PlaybackButtons[i - 1];
-            }
-
-            PlaybackButtons[i].navigation = navigation;
-        }
+        contentPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(contentPanel.rect.width, contentPanel.transform.childCount * buttonHeight);
     }
 
     private void Update()
@@ -133,6 +117,8 @@ public class ScrollAgain : MonoBehaviour
         Debug.Log($"Mathf.Abs(selectedRectTransform.anchoredPosition.y): {Mathf.Abs(selectedRectTransform.anchoredPosition.y)}");
 
         // If the selected position is below the current lower bound of the scroll view we scroll down.
+        Debug.Log($"selectedPositionY: {selectedPositionY}");
+        Debug.Log($"scrollViewMaxY: {scrollViewMaxY}");
         if (selectedPositionY > scrollViewMaxY)
         {
             float newY = selectedPositionY - scrollRectTransform.rect.height;

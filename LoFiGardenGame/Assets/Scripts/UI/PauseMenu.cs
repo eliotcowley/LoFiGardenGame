@@ -25,6 +25,9 @@ public class PauseMenu : MonoBehaviour
     private GameObject settingsMenu;
 
     [SerializeField]
+    private GameObject itemsMenu;
+
+    [SerializeField]
     private Button mainResumeButton;
 
     [SerializeField]
@@ -38,6 +41,9 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField]
     private Button settingsBackButton;
+
+    [SerializeField]
+    private Button itemsBackButton;
 
     [SerializeField]
     private TextMeshProUGUI playPauseText;
@@ -84,6 +90,10 @@ public class PauseMenu : MonoBehaviour
             else if (settingsMenu.activeSelf)
             {
                 ExitSettingsMenu();
+            }
+            else if (itemsMenu.activeSelf)
+            {
+                ExitItemsMenu();
             }
         }
     }
@@ -154,6 +164,22 @@ public class PauseMenu : MonoBehaviour
     {
         DeselectOtherButtons();
         settingsMenu.SetActive(false);
+        pauseMenu.SetActive(true);
+        mainResumeButton.Select();
+    }
+
+    public void OpenItemsMenu()
+    {
+        DeselectOtherButtons();
+        pauseMenu.SetActive(false);
+        itemsMenu.SetActive(true);
+        itemsBackButton.Select();
+    }
+
+    public void ExitItemsMenu()
+    {
+        DeselectOtherButtons();
+        itemsMenu.SetActive(false);
         pauseMenu.SetActive(true);
         mainResumeButton.Select();
     }

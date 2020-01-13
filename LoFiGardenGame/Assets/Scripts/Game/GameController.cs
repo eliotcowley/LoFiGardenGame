@@ -14,6 +14,8 @@ public class GameController : Singleton<GameController>
     public MusicController MusicController;
 
     public GameObject Phone;
+    public Dictionary<string, int> Items;
+    public GameGrid GameGrid;
 
     [SerializeField]
     private Button resumeButton;
@@ -28,11 +30,22 @@ public class GameController : Singleton<GameController>
     private void Start()
     {
         blurEffect = Camera.main.GetComponent<PostProcessVolume>();
+        Items = new Dictionary<string, int>();
+        Items.Add("Test", 99);
+        Items.Add("Foo", 12);
+        Items.Add("Bar", 34);
+        Items.Add("Abc", 56);
+        Items.Add("Def", 78);
+        Items.Add("Ghi", 90);
+        Items.Add("Jkl", 99);
+        Items.Add("Mno", 99);
+        Items.Add("Pqr", 99);
+        Items.Add("Stu", 99);
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown(Constants.Input_Menu))
+        if (Input.GetButtonDown(Constants.Input_Menu) && (!Phone.activeSelf))
         {
             TogglePause();
         }

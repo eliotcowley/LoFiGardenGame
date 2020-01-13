@@ -9,6 +9,8 @@ TagManager:
   - ButtonSelected
   - PlayingImage
   - ScrollView
+  - ItemName
+  - ItemCount
   layers:
   - Default
   - TransparentFX

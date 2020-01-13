@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI contextualText;
 
+    [SerializeField]
+    private GameObject flowerPrefab;
+
     private Rigidbody rb;
     private Animator animator;
 
@@ -61,5 +64,14 @@ public class PlayerController : MonoBehaviour
         }
 
         animator.SetFloat(Constants.Anim_Speed, moveVector.sqrMagnitude);
+    }
+
+    private void Update()
+    {
+        if (Input.GetButtonDown(Constants.Input_Submit))
+        {
+            Vector3Int cellPosition = GameController.Instance.GameGrid.WorldToCell(transform.position);
+            Instantiate(flowerPrefab, GameController.Instance.GameGrid.CellToWorld(cellPosition), Quaternion.identity);
+        }
     }
 }

@@ -27,4 +27,14 @@ public class GameGrid : MonoBehaviour
             }
         }
     }
+
+    public Vector3Int WorldToCell(Vector3 worldPosition)
+    {
+        return grid.WorldToCell(worldPosition);
+    }
+
+    public Vector3 CellToWorld(Vector3Int cellPosition)
+    {
+        return grid.CellToWorld(cellPosition);
+    }
 }

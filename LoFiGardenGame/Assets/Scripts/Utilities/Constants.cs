@@ -21,6 +21,8 @@ public static class Constants
     public static string Tag_ButtonSelected = "ButtonSelected";
     public static string Tag_PlayingImage = "PlayingImage";
     public static string Tag_ScrollView = "ScrollView";
+    public static string Tag_ItemName = "ItemName";
+    public static string Tag_ItemCount = "ItemCount";
 
     // Prefabs
     public static string Prefab_MusicController = "MusicController";
